@@ -1,4 +1,3 @@
-//Функция последовательной генерации
 function createIdGenerator () {
   let lastGeneratedId = 0;
 
@@ -8,7 +7,6 @@ function createIdGenerator () {
   };
 }
 
-//Функция генерации случайных чисел из указанного диапазона, далее - ФСЧ
 function getRandomInteger (min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -17,7 +15,6 @@ function getRandomInteger (min, max) {
   return Math.floor(result);
 }
 
-//Функция ФСЧ без повторения значений
 function createRandomIdFromRangeGenerator (min, max) {
   const previousValues = [];
 

@@ -4,13 +4,11 @@ function getLengthString(str, length) {
 }
 
 export function getPalindrom(str) {
-  // Удаляем все не-буквенные символы (пробелы, знаки препинания) и приводим к нижнему регистру
   const cleanStr = str.replace(/[^a-zа-яё]/gi, '').toLowerCase();
   return cleanStr === cleanStr.split('').reverse().join('');
 }
 
-// Функция возвращает объект с тестами для задания 1
-export function zadanie1() {
+export function runTask1() {
   return {
     test1: {
       str: 'Hello, My name is Ivan',
@@ -31,8 +29,7 @@ export function zadanie1() {
   };
 }
 
-// Функция возвращает объект с тестами для задания 2
-export function zadanie2(){{
+export function runTask2(){{
   return {
     test1: {
       str: 'топот',
@@ -65,23 +62,18 @@ export function zadanie2(){{
   };
 }}
 
-// Функция для преобразования времени в минуты
-function timeToMinutes(timeStr) {
+function timeToMinutes(timeStr)
+{
   const [hours, minutes] = timeStr.split(':').map(Number);
   return hours * 60 + minutes;
 }
-//Вазвращение true если продолжительность встречи в рамках раб. дня,
-//false - выходит за рмаки рабочего дня
-export function getControlTime(start, end, meet, duration) {
-  // Преобразуем все времена в минуты
+
+export function getControlTime(start, end, meet, duration)
+{
   const startWork = timeToMinutes(start);
   const endWork = timeToMinutes(end);
   const startMeet = timeToMinutes(meet);
   const endMeet = startMeet + duration;
 
-  // Проверяем, что встреча полностью в пределах рабочего дня
   return startMeet >= startWork && endMeet <= endWork;
 }
-
-
-

@@ -1,7 +1,6 @@
 const successTemplate = document.querySelector('#success');
 const errorTemplate = document.querySelector('#error');
 
-// Функция показа сообщения об успехе
 const showSuccessMessage = () => {
   const successElement = successTemplate.content.cloneNode(true);
   document.body.appendChild(successElement);
@@ -32,7 +31,6 @@ const showSuccessMessage = () => {
   document.addEventListener('click', onOutsideClick);
 };
 
-// Функция показа сообщения об ошибке
 const showErrorMessage = () => {
   const errorElement = errorTemplate.content.cloneNode(true);
   document.body.appendChild(errorElement);

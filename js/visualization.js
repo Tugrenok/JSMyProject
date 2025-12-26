@@ -1,4 +1,3 @@
-// Функция для создания DOM-элемента фотографии на основе шаблона
 const createThumbnailElement = (photoData) => {
   const template = document.querySelector('#picture').content.querySelector('.picture');
   const thumbnailElement = template.cloneNode(true);
@@ -12,27 +11,21 @@ const createThumbnailElement = (photoData) => {
   comments.textContent = photoData.comments.length;
   likes.textContent = photoData.likes;
 
-  // Сохраняем ВСЕ данные фотографии для использования в полноэкранном режиме
   thumbnailElement.photoData = photoData;
 
-  // Добавляем data-атрибут для поиска миниатюры по ID
   thumbnailElement.dataset.photoId = photoData.id;
 
   return thumbnailElement;
 };
 
-// Функция для отрисовки всех миниатюр
 const visual = (photosData) => {
   const container = document.querySelector('.pictures');
   const fragment = document.createDocumentFragment();
 
-  // Очищаем контейнер перед добавлением новых элементов
   const existingPictures = container.querySelectorAll('.picture');
   existingPictures.forEach(picture => picture.remove());
 
-  // Создаем и добавляем миниатюры в fragment
   photosData.forEach((photoData) => {
-    // Инициализируем свойство userLiked если его нет
     if (photoData.userLiked === undefined) {
       photoData.userLiked = false;
     }
@@ -41,7 +34,6 @@ const visual = (photosData) => {
     fragment.appendChild(thumbnailElement);
   });
 
-  // Добавляем все элементы в контейнер за одну операцию
   container.appendChild(fragment);
 };
 

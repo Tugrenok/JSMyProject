@@ -1,94 +1,91 @@
-// filters.js
-import { visual } from './visualizacia.js';
+import { visual } from './visualization.js';
 
 let currentPhotos = [];
-let currentFilter = 'default';
 let timeoutId = null;
 
-// Функции фильтрации
-const FilterFunctions = {
+const filterFunctions = {
   default: (photos) => {
-    // Проверяем, что photos - массив
     if (!Array.isArray(photos)) {
-      console.error('Photos is not an array:', photos);
       return [];
     }
-    return photos;
+    return photos.sort((a, b) => a.id - b.id);
   },
 
   random: (photos) => {
-    // Проверяем, что photos - массив
     if (!Array.isArray(photos)) {
-      console.error('Photos is not an array:', photos);
       return [];
     }
-    const shuffled = [...photos].sort(() => Math.random() - 0.5);
+
+    const shuffled = [...photos]
+      .sort(() => Math.random() - 0.5);
+
     return shuffled.slice(0, 10);
   },
 
   discussed: (photos) => {
-    // Проверяем, что photos - массив
     if (!Array.isArray(photos)) {
-      console.error('Photos is not an array:', photos);
       return [];
     }
     return [...photos].sort((a, b) => b.comments.length - a.comments.length);
   }
 };
 
-// Функция применения фильтра с устранением дребезга
 const applyFilter = (filterType) => {
   if (timeoutId) {
     clearTimeout(timeoutId);
   }
 
   timeoutId = setTimeout(() => {
-    currentFilter = filterType;
-
-    // Проверяем, что currentPhotos - массив
-    if (!Array.isArray(currentPhotos)) {
-      console.error('Current photos is not an array:', currentPhotos);
+    if (!Array.isArray(currentPhotos) || currentPhotos.length === 0) {
       return;
     }
 
-    const filteredPhotos = FilterFunctions[filterType](currentPhotos);
+    const filteredPhotos = filterFunctions[filterType](currentPhotos);
     visual(filteredPhotos);
   }, 500);
 };
 
-// Функция активации кнопки фильтра
 const activateFilterButton = (button) => {
-  // Убираем активный класс у всех кнопок
   document.querySelectorAll('.img-filters__button').forEach(btn => {
     btn.classList.remove('img-filters__button--active');
   });
 
-  // Добавляем активный класс текущей кнопке
-  button.classList.add('img-filters__button--active');
+  if (button) {
+    button.classList.add('img-filters__button--active');
+  }
 };
 
-// Инициализация фильтров
 const initFilters = (photosData) => {
   const filtersContainer = document.querySelector('.img-filters');
   const filterButtons = document.querySelectorAll('.img-filters__button');
 
-  // Проверяем, что photosData - массив
-  if (!Array.isArray(photosData)) {
-    console.error('Photos data is not an array:', photosData);
+  if (!Array.isArray(photosData) || photosData.length === 0) {
     return;
   }
 
-  // Сохраняем исходные данные
   currentPhotos = photosData;
 
-  // Показываем блок фильтров
-  filtersContainer.classList.remove('img-filters--inactive');
+  if (photosData.length > 0) {
+    filtersContainer.classList.remove('img-filters--inactive');
 
-  // Добавляем обработчики для кнопок фильтров
+    const sortedPhotos = photosData.sort((a, b) => a.id - b.id);
+    visual(sortedPhotos);
+  }
+
+  const defaultButton = document.querySelector('#filter-default');
+  if (defaultButton) {
+    defaultButton.classList.add('img-filters__button--active');
+  }
+
   filterButtons.forEach(button => {
     button.addEventListener('click', (evt) => {
       const filterType = evt.target.id.replace('filter-', '');
-      activateFilterButton(evt.target);
+
+      filterButtons.forEach(btn => {
+        btn.classList.remove('img-filters__button--active');
+      });
+      evt.target.classList.add('img-filters__button--active');
+
       applyFilter(filterType);
     });
   });

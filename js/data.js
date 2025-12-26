@@ -1,8 +1,6 @@
-//импортируем вспомогательный модуль
 import {createIdGenerator, createRandomIdFromRangeGenerator, getRandomInteger} from './utils.js';
 
-//Константы
-const NAMES = [ //Имена
+const NAMES = [
   'Иван',
   'Хуан Себастьян',
   'Мария',
@@ -13,7 +11,7 @@ const NAMES = [ //Имена
   'Вашингтон',
 ];
 
-const DESCRIPTION = [ //Описание фотографий
+const DESCRIPTION = [
   'Закат над горным озером в Альпах',
   'Уличный музыкант играет на саксофоне в Париже',
   'Кофе на деревянном столе утренним светом',
@@ -36,7 +34,7 @@ const DESCRIPTION = [ //Описание фотографий
   'Библиотека с высокими деревянными стеллажами'
 ];
 
-const COMMENTS = [ //Комментарии
+const COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -45,34 +43,31 @@ const COMMENTS = [ //Комментарии
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const SIMILAR_USERS_COUNT = 25; //Кол-во создаваемых пользователей (для теста)
-const SIMILAR_URL_COUNT = 6; //Кол-во URL аватаров (для теста)
-const MAX_COUNT_COMMENTS = 30; //Маакс. кол-во комментариев на 1 аватар
+const SIMILAR_USERS_COUNT = 25;
+const SIMILAR_URL_COUNT = 6;
+const MAX_COUNT_COMMENTS = 30;
 
-const generateId = createRandomIdFromRangeGenerator(1, SIMILAR_USERS_COUNT);//Случайное Id от 1 до 25 включительно без повторений
-const generateURLId = createRandomIdFromRangeGenerator(1, SIMILAR_USERS_COUNT);//Случайное Id URL от 1 до 25 включительно без повторений
-const generateCommentsId = createIdGenerator();//Последовательное изменение Id комментариев
-const generateCountComments = createRandomIdFromRangeGenerator(0, MAX_COUNT_COMMENTS);//Случайное кол-во комментариев от 0 до 30
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];//Cлучайный элемент из списка
+const generateId = createRandomIdFromRangeGenerator(1, SIMILAR_USERS_COUNT);
+const generateURLId = createRandomIdFromRangeGenerator(1, SIMILAR_USERS_COUNT);
+const generateCommentsId = createIdGenerator();
+const generateCountComments = createRandomIdFromRangeGenerator(0, MAX_COUNT_COMMENTS);
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-//Содание объекта "Комментарий"
 const createComments = () => ({
-  avatar: `img/avatar-${getRandomInteger(1, SIMILAR_URL_COUNT)}.svg`, //Уникальный аватар
-  message: `${getRandomArrayElement(COMMENTS)}`, //Какое-то сообщение
-  name: `${getRandomArrayElement(NAMES)}`, //Какое-то имя
-  id: generateCommentsId(), //Id - поеследовательное Id
+  avatar: `img/avatar-${getRandomInteger(1, SIMILAR_URL_COUNT)}.svg`,
+  message: `${getRandomArrayElement(COMMENTS)}`,
+  name: `${getRandomArrayElement(NAMES)}`,
+  id: generateCommentsId(),
 });
 
-//Cоздания объекта "Пользователь"
 const createUsers = () => ({
-  id: generateId(), //Id - уникальное
-  url: `photos/${generateURLId()}.jpg`, // Фото - уникальное
-  description: `${getRandomArrayElement(DESCRIPTION)}`, // Описание фото - любое
-  likes: getRandomInteger(15, 200), // Кол-во лайков: от 15 до 200 включительно
-  comments: Array.from({length: generateCountComments()}, createComments), //массив комментариев
+  id: generateId(),
+  url: `photos/${generateURLId()}.jpg`,
+  description: `${getRandomArrayElement(DESCRIPTION)}`,
+  likes: getRandomInteger(15, 200),
+  comments: Array.from({length: generateCountComments()}, createComments),
 });
 
 
-const similarUsers = () => Array.from({length: SIMILAR_USERS_COUNT}, createUsers);//Создание массива из пользователей
-
-export {similarUsers};
+const generateSimilarPhotos = () => Array.from({length: SIMILAR_USERS_COUNT}, createUsers);
+export {generateSimilarPhotos};
